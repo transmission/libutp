@@ -18,7 +18,7 @@ endif()
 
 if(LIBUTP_STANDALONE_BUILD)
     if(NOT CMAKE_C_STANDARD)
-        set(CMAKE_C_STANDARD 99)
+        set(CMAKE_C_STANDARD 11)
         set(CMAKE_C_STANDARD_REQUIRED ON)
         set(CMAKE_C_EXTENSIONS OFF)
     endif()
