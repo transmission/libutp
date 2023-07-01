@@ -20,9 +20,9 @@ jobs:
             cmake: minimal
         include:
           - cmake: minimal
-            cmake_url_part: v3.5/cmake-3.5.2
+            cmake_url_part: v3.12/cmake-3.12.4
           - cmake: latest
-            cmake_url_part: v3.21/cmake-3.21.1
+            cmake_url_part: v3.26/cmake-3.26.4
           - os: linux
             runner: ubuntu-latest
           - os: windows
@@ -37,7 +37,7 @@ jobs:
             runner: macos-latest
     steps:
       - name: Checkout
-        uses: actions/checkout@v1
+        uses: actions/checkout@v3
       - name: Install dependencies (linux)
         if: matrix.os == 'linux'
         run: |
