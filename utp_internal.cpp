@@ -591,6 +591,12 @@ struct UTPSocket {
 		return opt_rcvbuf > numbuf ? opt_rcvbuf - numbuf : 0;
 	}
 
+	// check if the read buffer have space to accept this payload
+	bool can_buffer_payload(size_t len)
+	{
+		return get_rcv_window() >= len;
+	}
+
 	// Test if we're ready to decay max_window
 	// XXX this breaks when spaced by > INT_MAX/2, which is 49
 	// days; the failure mode in that case is we do an extra decay
@@ -2344,9 +2350,16 @@ size_t utp_process_incoming(UTPSocket *conn, const byte *packet, size_t len, boo
 		// sequence numbers past this
 	}
 
+	// Can our read buffer hold this packet payload?
+	if (!conn->can_buffer_payload(packet_end - data))
+	{
+		return 0;
+	}
+
 	// Getting an in-order packet?
 	if (seqnr == 0) {
 		size_t count = packet_end - data;
+
 		if (count > 0 && conn->state != CS_FIN_SENT) {
 
 			#if UTP_DEBUG_LOGGING
